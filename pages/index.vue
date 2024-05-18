@@ -3,24 +3,30 @@
     <v-row>
       <v-col cols="12">
         <h1 class="text-center">Product Listing</h1>
-        <v-btn icon @mouseenter="showCart = true" @mouseleave="showCart = false">
-          <v-badge :content="cartItemCount" color="primary">
-            <v-icon>mdi-cart</v-icon>
-          </v-badge>
-        </v-btn>
-        <v-slide-y-transition>
-          <v-card v-if="showCart" class="cart-dropdown" :elevation="12">
-            <v-card-title>Cart</v-card-title>
-            <v-list>
-              <v-list-item v-for="(item, index) in cart" :key="index">
-                <v-list-item-content>{{ item.title }}</v-list-item-content>
-                <v-list-item-action>
-                  <v-icon @click="removeFromCart(index)">mdi-delete</v-icon>
-                </v-list-item-action>
-              </v-list-item>
-            </v-list>
-          </v-card>
-        </v-slide-y-transition>
+        <v-row align="center" class="cart-container" @mouseenter="showCart = true" @mouseleave="showCart = false">
+          <v-col cols="auto">
+            <v-btn icon>
+              <v-badge :content="cartItemCount" color="primary">
+                <v-icon>mdi-cart</v-icon>
+              </v-badge>
+            </v-btn>
+          </v-col>
+          <v-col v-if="showCart" class="cart-dropdown-container">
+            <v-slide-y-transition>
+              <v-card class="cart-dropdown" :elevation="12">
+                <v-card-title>Cart</v-card-title>
+                <v-list>
+                  <v-list-item v-for="(item, index) in cart" :key="index">
+                    <v-list-item-content>{{ item.title }}</v-list-item-content>
+                    <v-list-item-action>
+                      <v-icon @click="removeFromCart(index)">mdi-delete</v-icon>
+                    </v-list-item-action>
+                  </v-list-item>
+                </v-list>
+              </v-card>
+            </v-slide-y-transition>
+          </v-col>
+        </v-row>
       </v-col>
     </v-row>
     
@@ -82,6 +88,8 @@
     </v-row>
   </v-container>
 </template>
+
+
 
 <script>
 export default {
@@ -158,23 +166,27 @@ export default {
 .text-center {
   text-align: center;
 }
-.go-to-page-container {
+
+.cart-container {
   display: flex;
-  justify-content: center;
   align-items: center;
 }
-.cart-dropdown {
-  position: absolute;
-  top: 50px;
-  right: 0;
-  z-index: 1000;
-  width: 200px;
-  opacity: 0;
-  transition: opacity 0.3s ease; 
+
+.cart-dropdown-container {
+  flex-grow: 1;
 }
 
-.cart-dropdown.active {
+.cart-dropdown {
+  position: relative;
+  width: 25%;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.cart-dropdown-container .cart-dropdown {
   opacity: 1;
+  visibility: visible;
 }
 
 .product-card {
@@ -190,3 +202,5 @@ export default {
   cursor: pointer;
 }
 </style>
+
+
